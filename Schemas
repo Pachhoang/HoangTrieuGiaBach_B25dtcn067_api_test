@@ -1,0 +1,49 @@
+from pydantic import BaseModel
+
+class ClassroomResponse(BaseModel):
+    id: int
+    class_code: str
+    class_name: str
+
+    class Config:
+        from_attributes = True
+
+
+
+
+
+from pydantic import BaseModel, Field, EmailStr
+from typing import Optional, List
+from schemas.classroom import ClassroomResponse
+
+# Schema phục vụ việc nhận dữ liệu đầu vào (POST /students)
+class StudentCreate(BaseModel):
+    student_code: str = Field(..., min_length=3, max_length=20, description="Mã sinh viên từ 3 đến 20 ký tự")
+    full_name: str = Field(..., min_length=2, max_length=100, description="Tên sinh viên từ 2 đến 100 ký tự")
+    email: EmailStr = Field(..., description="Email định dạng hợp lệ, bắt buộc")
+    class_id: int = Field(..., ge=1, description="ID lớp học phải lớn hơn hoặc bằng 1")
+
+# Schema thông tin sinh viên nằm trong cấu trúc Data trả về
+class StudentDetailResponse(BaseModel):
+    id: int
+    student_code: str
+    full_name: str
+    email: str
+    classroom: ClassroomResponse
+
+    class Config:
+        from_attributes = True
+
+# Các Schema bọc ngoài để khớp định dạng JSON trả về chuẩn của bạn
+class BaseAPIResponse(BaseModel):
+    statusCode: int
+    message: str
+    data: Optional[dict] = None
+    error: Optional[str] = None
+    path: str = "/students"
+
+class GetStudentsResponse(BaseAPIResponse):
+    data: List[StudentDetailResponse]
+
+class CreateStudentResponse(BaseAPIResponse):
+    data: StudentDetailResponse
