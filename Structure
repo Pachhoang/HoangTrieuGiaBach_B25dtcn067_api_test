@@ -1,0 +1,22 @@
+my_fastapi_project/
+│
+├── database.py          # Kết nối MySQL (Engine, SessionLocal, Base)
+├── main.py              # File chạy chính của ứng dụng
+│
+├── models/              # Định nghĩa các bảng Database (SQLAlchemy)
+│   ├── __init__.py
+│   ├── classroom.py     # Model Classroom
+│   └── student.py       # Model Student
+│
+├── schemas/             # Định nghĩa cấu trúc dữ liệu gửi lên / trả về (Pydantic)
+│   ├── __init__.py
+│   ├── classroom.py     # Schema Classroom
+│   └── student.py       # Schema Student
+│
+├── services/            # Chứa logic xử lý nghiệp vụ (Business Logic)
+│   ├── __init__.py
+│   └── student_service.py
+│
+└── routers/             # Định nghĩa các API endpoints (FastAPI Routes)
+    ├── __init__.py
+    └── student.py       # Router xử lý cho sinh viên
